@@ -1,10 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-plusplus */
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-console */
-/* eslint-disable prefer-const */
 
 const keys = [
   [
@@ -454,46 +447,50 @@ const keys = [
 
   ],
 ];
-let pressedKeys = new Set();
+const pressedKeys = new Set();
 let currLang = 'en';
-let prevLang = localStorage.getItem('lang');
+const prevLang = localStorage.getItem('lang');
 
-let body = document.querySelector('body');
+const body = document.querySelector('body');
 
-let outputArea = document.createElement('textarea');
+const outputArea = document.createElement('textarea');
 outputArea.setAttribute('rows', 4);
 outputArea.classList.add('outputArea');
 body.appendChild(outputArea);
 
-let container = document.createElement('div');
+const container = document.createElement('div');
 container.classList.add('keybord-container');
 body.appendChild(container);
 
-for (let i = 1; i < 6; i++) {
-  let row = document.createElement('div');
+for (let i = 1; i < 6; i += 1) {
+  const row = document.createElement('div');
   row.classList.add('rows', `row-${i}`);
   container.appendChild(row);
 
   keys[i - 1].forEach((el) => {
-    let button = document.createElement('div');
+    const button = document.createElement('div');
     button.classList.add(el[0]);
 
     let span = document.createElement('span');
+    // eslint-disable-next-line prefer-destructuring
     span.textContent = (el[1]);
     span.classList.add('ruLow', 'hidden');
     button.appendChild(span);
 
     span = document.createElement('span');
+    // eslint-disable-next-line prefer-destructuring
     span.textContent = (el[2]);
     span.classList.add('ruUp', 'hidden');
     button.appendChild(span);
 
     span = document.createElement('span');
+    // eslint-disable-next-line prefer-destructuring
     span.textContent = (el[3]);
     span.classList.add('enLow', 'activeLetter');
     button.appendChild(span);
 
     span = document.createElement('span');
+    // eslint-disable-next-line prefer-destructuring
     span.textContent = (el[4]);
     span.classList.add('enUp', 'hidden');
     button.appendChild(span);
@@ -502,95 +499,6 @@ for (let i = 1; i < 6; i++) {
   });
 }
 
-container.addEventListener('click', (event) => {
-  let keyClick = event.target.closest('div');
-  let keyClickClass = event.target.closest('div').classList[0];
-  event.preventDefault();
-  console.log('Pressed:', keyClickClass);
-  setTimeout(() => {
-    keyClick.classList.add('active');
-    setTimeout(() => {
-      keyClick.classList.remove('active');
-    }, 200);
-  }, 0);
-  if (keyClick.querySelector('.activeLetter').textContent.length < 2) {
-    outputArea.value += keyClick.querySelector('.activeLetter').textContent;
-  }
-  if (keyClickClass === 'ShiftLeft' || keyClickClass === 'ShiftRight') {
-    setTimeout(() => {
-      shifting();
-      setTimeout(() => {
-        unshifting();
-      }, 500);
-    }, 0);
-  }
-});
-
-if (prevLang === 'ru') {
-  langChange();
-}
-
-
-addEventListener('keydown', (event) => {
-  console.log('Hard key ', event.code);
-  let target = document.querySelector([`.${event.code}`]);
-  target.classList.add('active');
-  pressedKeys.add(event.code);
-  let q = 0;
-  pressedKeys.forEach(() => {
-    q++;
-  });
-  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft') && q === 2) {
-    console.log('langChange()');
-    langChange();
-  }
-  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-    shifting();
-  }
-});
-
-addEventListener('keyup', (event) => {
-  console.log('Hard key ', event.code);
-  let target = document.querySelector([`.${event.code}`]);
-  target.classList.remove('active');
-  pressedKeys.delete(event.code);
-  // console.log(pressedKeys);
-  if (event.code === 'ShiftLeft') {
-    unshifting();
-  }
-});
-
-function langChange() {
-  if (currLang === 'en') {
-    let targets = document.querySelectorAll('.enLow');
-    targets.forEach((element) => {
-      element.classList.remove('activeLetter');
-      element.classList.add('hidden');
-    });
-
-    targets = document.querySelectorAll('.ruLow');
-    targets.forEach((element) => {
-      element.classList.add('activeLetter');
-      element.classList.remove('hidden');
-    });
-    localStorage.setItem('lang', 'ru');
-    currLang = 'ru';
-  } else {
-    let targets = document.querySelectorAll('.ruLow');
-    targets.forEach((element) => {
-      element.classList.remove('activeLetter');
-      element.classList.add('hidden');
-    });
-
-    targets = document.querySelectorAll('.enLow');
-    targets.forEach((element) => {
-      element.classList.add('activeLetter');
-      element.classList.remove('hidden');
-    });
-    localStorage.setItem('lang', 'en');
-    currLang = 'en';
-  }
-}
 function shifting() {
   if (currLang === 'en') {
     let targets = document.querySelectorAll('.enLow');
@@ -645,3 +553,95 @@ function unshifting() {
     });
   }
 }
+
+function langChange() {
+  if (currLang === 'en') {
+    let targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+    localStorage.setItem('lang', 'ru');
+    currLang = 'ru';
+  } else {
+    let targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+    localStorage.setItem('lang', 'en');
+    currLang = 'en';
+  }
+}
+
+container.addEventListener('click', (event) => {
+  const keyClick = event.target.closest('div');
+  const keyClickClass = event.target.closest('div').classList[0];
+  event.preventDefault();
+  // console.log('Pressed:', keyClickClass);
+  setTimeout(() => {
+    keyClick.classList.add('active');
+    setTimeout(() => {
+      keyClick.classList.remove('active');
+    }, 200);
+  }, 0);
+  if (keyClick.querySelector('.activeLetter').textContent.length < 2) {
+    outputArea.value += keyClick.querySelector('.activeLetter').textContent;
+  }
+  if (keyClickClass === 'ShiftLeft' || keyClickClass === 'ShiftRight') {
+    setTimeout(() => {
+      shifting();
+      setTimeout(() => {
+        unshifting();
+      }, 500);
+    }, 0);
+  }
+});
+
+if (prevLang === 'ru') {
+  langChange();
+}
+
+
+// eslint-disable-next-line no-restricted-globals
+addEventListener('keydown', (event) => {
+  // console.log('Hard key ', event.code);
+  const target = document.querySelector([`.${event.code}`]);
+  target.classList.add('active');
+  pressedKeys.add(event.code);
+  let q = 0;
+  pressedKeys.forEach(() => {
+    q += 1;
+  });
+  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft') && q === 2) {
+    // console.log('langChange()');
+    langChange();
+  }
+  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+    shifting();
+  }
+});
+
+// eslint-disable-next-line no-restricted-globals
+addEventListener('keyup', (event) => {
+  // console.log('Hard key ', event.code);
+  const target = document.querySelector([`.${event.code}`]);
+  target.classList.remove('active');
+  pressedKeys.delete(event.code);
+  // console.log(pressedKeys);
+  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+    unshifting();
+  }
+});
