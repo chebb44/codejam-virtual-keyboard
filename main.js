@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-plusplus */
 /* eslint-disable prefer-destructuring */
@@ -455,7 +456,7 @@ const keys = [
 ];
 let pressedKeys = new Set();
 let currLang = 'en';
-let shifted = false;
+let prevLang = localStorage.getItem('lang');
 
 let body = document.querySelector('body');
 
@@ -525,14 +526,22 @@ container.addEventListener('click', (event) => {
   }
 });
 
+if (prevLang === 'ru') {
+  langChange();
+}
+
 
 addEventListener('keydown', (event) => {
+  event.preventDefault();
   console.log('Hard key ', event.code);
   let target = document.querySelector([`.${event.code}`]);
   target.classList.add('active');
   pressedKeys.add(event.code);
-  // console.log(pressedKeys);
-  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft')) {
+  let q = 0;
+  pressedKeys.forEach(() => {
+    q++;
+  });
+  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft') && q === 2) {
     console.log('langChange()');
     langChange();
   }
@@ -565,6 +574,7 @@ function langChange() {
       element.classList.add('activeLetter');
       element.classList.remove('hidden');
     });
+    localStorage.setItem('lang', 'ru');
     currLang = 'ru';
   } else {
     let targets = document.querySelectorAll('.ruLow');
@@ -578,6 +588,7 @@ function langChange() {
       element.classList.add('activeLetter');
       element.classList.remove('hidden');
     });
+    localStorage.setItem('lang', 'en');
     currLang = 'en';
   }
 }

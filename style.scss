@@ -18,8 +18,10 @@
     display: flex;
     justify-content: space-between;
     div{
-      border: 2px solid black;
+      margin: 2px;
+      border-radius: 5px;
       background-color: cornflowerblue;
+      font-weight: 700;
       height: 50px;
       flex-basis: 50px;
       flex-shrink: 0;
@@ -27,6 +29,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: border-radius 75ms ease-in-out;
+      transition: background-color 75ms ease-in-out;
       .hidden{
         display: none;
       }
@@ -50,7 +54,10 @@
       flex-grow: 15;
     }
     .active{
-      background-color: rgb(129, 129, 194);
+      border-radius: 25px;
+      background-color: rgb(73, 111, 180);
+      transition: background-color 75ms ease-in-out;
+      transition: border-radius 75ms ease-in-out;
     }
   }
 }

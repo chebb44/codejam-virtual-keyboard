@@ -35,8 +35,10 @@
 }
 
 .keybord-container .rows div {
-  border: 2px solid black;
+  margin: 2px;
+  border-radius: 5px;
   background-color: cornflowerblue;
+  font-weight: 700;
   height: 50px;
   -ms-flex-preferred-size: 50px;
       flex-basis: 50px;
@@ -54,6 +56,10 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-transition: border-radius 75ms ease-in-out;
+  transition: border-radius 75ms ease-in-out;
+  -webkit-transition: background-color 75ms ease-in-out;
+  transition: background-color 75ms ease-in-out;
 }
 
 .keybord-container .rows div .hidden {
@@ -85,6 +91,11 @@
 }
 
 .keybord-container .rows .active {
-  background-color: #8181c2;
+  border-radius: 25px;
+  background-color: #496fb4;
+  -webkit-transition: background-color 75ms ease-in-out;
+  transition: background-color 75ms ease-in-out;
+  -webkit-transition: border-radius 75ms ease-in-out;
+  transition: border-radius 75ms ease-in-out;
 }
 /*# sourceMappingURL=style.css.map */
