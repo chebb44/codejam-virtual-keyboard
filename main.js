@@ -532,7 +532,6 @@ if (prevLang === 'ru') {
 
 
 addEventListener('keydown', (event) => {
-  event.preventDefault();
   console.log('Hard key ', event.code);
   let target = document.querySelector([`.${event.code}`]);
   target.classList.add('active');
