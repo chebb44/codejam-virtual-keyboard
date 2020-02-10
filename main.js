@@ -1,4 +1,5 @@
 /* eslint-disable linebreak-style */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-plusplus */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
@@ -204,6 +205,13 @@ const keys = [
       '/',
       '\\',
       '|',
+    ],
+    [
+      'Delete',
+      'Del',
+      'Del',
+      'Del',
+      'Del',
     ],
   ],
   [
@@ -445,6 +453,9 @@ const keys = [
 
   ],
 ];
+let pressedKeys = new Set();
+let currLang = 'en';
+let shifted = false;
 
 let body = document.querySelector('body');
 
@@ -493,6 +504,7 @@ for (let i = 1; i < 6; i++) {
 container.addEventListener('click', (event) => {
   let keyClick = event.target.closest('div');
   let keyClickClass = event.target.closest('div').classList[0];
+  event.preventDefault();
   console.log('Pressed:', keyClickClass);
   setTimeout(() => {
     keyClick.classList.add('active');
@@ -503,4 +515,123 @@ container.addEventListener('click', (event) => {
   if (keyClick.querySelector('.activeLetter').textContent.length < 2) {
     outputArea.value += keyClick.querySelector('.activeLetter').textContent;
   }
+  if (keyClickClass === 'ShiftLeft' || keyClickClass === 'ShiftRight') {
+    setTimeout(() => {
+      shifting();
+      setTimeout(() => {
+        unshifting();
+      }, 500);
+    }, 0);
+  }
 });
+
+
+addEventListener('keydown', (event) => {
+  console.log('Hard key ', event.code);
+  let target = document.querySelector([`.${event.code}`]);
+  target.classList.add('active');
+  pressedKeys.add(event.code);
+  // console.log(pressedKeys);
+  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft')) {
+    console.log('langChange()');
+    langChange();
+  }
+  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+    shifting();
+  }
+});
+
+addEventListener('keyup', (event) => {
+  console.log('Hard key ', event.code);
+  let target = document.querySelector([`.${event.code}`]);
+  target.classList.remove('active');
+  pressedKeys.delete(event.code);
+  // console.log(pressedKeys);
+  if (event.code === 'ShiftLeft') {
+    unshifting();
+  }
+});
+
+function langChange() {
+  if (currLang === 'en') {
+    let targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+    currLang = 'ru';
+  } else {
+    let targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+    currLang = 'en';
+  }
+}
+function shifting() {
+  if (currLang === 'en') {
+    let targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.enUp');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+  } else {
+    let targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.ruUp');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+  }
+}
+function unshifting() {
+  if (currLang === 'en') {
+    let targets = document.querySelectorAll('.enUp');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.enLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+  } else {
+    let targets = document.querySelectorAll('.ruUp');
+    targets.forEach((element) => {
+      element.classList.remove('activeLetter');
+      element.classList.add('hidden');
+    });
+
+    targets = document.querySelectorAll('.ruLow');
+    targets.forEach((element) => {
+      element.classList.add('activeLetter');
+      element.classList.remove('hidden');
+    });
+  }
+}

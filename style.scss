@@ -10,7 +10,9 @@
   margin-right: auto;
   display: flex;
   flex-direction: column;
-  width: 800px;
+  width: 850px;
+  cursor: pointer;
+  user-select: none;
   .rows{
     width: 100%;
     display: flex;
