@@ -1,1 +1,85 @@
-/* No CSS *//*# sourceMappingURL=style.css.map */
+.outputArea {
+  display: block;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.keybord-container {
+  margin-left: auto;
+  margin-right: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 800px;
+}
+
+.keybord-container .rows {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.keybord-container .rows div {
+  border: 2px solid black;
+  background-color: cornflowerblue;
+  height: 50px;
+  -ms-flex-preferred-size: 50px;
+      flex-basis: 50px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.keybord-container .rows div .hidden {
+  display: none;
+}
+
+.keybord-container .rows .Backspace,
+.keybord-container .rows .Tab,
+.keybord-container .rows .CapsLock,
+.keybord-container .rows .ShiftLeft,
+.keybord-container .rows .ControlLeft,
+.keybord-container .rows .MetaLeft,
+.keybord-container .rows .AltLeft,
+.keybord-container .rows .AltRight,
+.keybord-container .rows .MetaRight,
+.keybord-container .rows .ContextMenu,
+.keybord-container .rows .ControlRight,
+.keybord-container .rows .ShiftRight,
+.keybord-container .rows .Enter {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.keybord-container .rows .Space {
+  -webkit-box-flex: 15;
+      -ms-flex-positive: 15;
+          flex-grow: 15;
+}
+
+.keybord-container .rows .active {
+  background-color: #8181c2;
+}
+/*# sourceMappingURL=style.css.map */
