@@ -453,6 +453,11 @@ const prevLang = localStorage.getItem('lang');
 
 const body = document.querySelector('body');
 
+const description = document.createElement('div');
+description.classList.add('description');
+description.innerText = 'Press Ctrl+Alt to switch language. Design by Win.';
+body.appendChild(description);
+
 const outputArea = document.createElement('textarea');
 outputArea.setAttribute('rows', 4);
 outputArea.classList.add('outputArea');
@@ -498,6 +503,13 @@ for (let i = 1; i < 6; i += 1) {
     row.appendChild(button);
   });
 }
+
+function setFocus() {
+  outputArea.focus();
+}
+setFocus();
+
+outputArea.onblur = setFocus;
 
 function shifting() {
   if (currLang === 'en') {
@@ -608,6 +620,15 @@ container.addEventListener('click', (event) => {
       }, 500);
     }, 0);
   }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Enter') {
+    outputArea.value += '\n';
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Backspace') {
+    outputArea.value = outputArea.value.slice(0, -1);
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Tab') {
+    outputArea.value += '    ';
+  }
 });
 
 if (prevLang === 'ru') {
@@ -617,7 +638,6 @@ if (prevLang === 'ru') {
 
 // eslint-disable-next-line no-restricted-globals
 addEventListener('keydown', (event) => {
-  // console.log('Hard key ', event.code);
   const target = document.querySelector([`.${event.code}`]);
   target.classList.add('active');
   pressedKeys.add(event.code);
@@ -625,13 +645,16 @@ addEventListener('keydown', (event) => {
   pressedKeys.forEach(() => {
     q += 1;
   });
-  if (pressedKeys.has('ShiftLeft') && pressedKeys.has('AltLeft') && q === 2) {
+  if (pressedKeys.has('ControlLeft') && pressedKeys.has('AltLeft') && q === 2) {
     // console.log('langChange()');
     langChange();
   }
   if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
     shifting();
   }
+  event.preventDefault();
+  const input = document.querySelector([`.${event.code} .activeLetter`]).textContent;
+  if (input.length < 2) outputArea.value += input;
 });
 
 // eslint-disable-next-line no-restricted-globals
