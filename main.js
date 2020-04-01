@@ -359,25 +359,32 @@ const keys = [
       'M',
     ],
     [
-      'Period',
+      'Comma',
       'б',
       'Б',
       ',',
       '<',
     ],
     [
-      'Slash',
+      'Period',
       'ю',
       'Ю',
       '.',
       '>',
     ],
     [
-      'IntlRo',
+      'Slash',
       '.',
       ',',
       '/',
       '?',
+    ],
+    [
+      'ArrowUp',
+      'Up',
+      'Up',
+      'Up',
+      'Up',
     ],
     [
       'ShiftRight',
@@ -443,6 +450,27 @@ const keys = [
       'Ctrl',
       'Ctrl',
       'Ctrl',
+    ],
+    [
+      'ArrowLeft',
+      'Left',
+      'Left',
+      'Left',
+      'Left',
+    ],
+    [
+      'ArrowDown',
+      'Down',
+      'Down',
+      'Down',
+      'Down',
+    ],
+    [
+      'ArrowRight',
+      'Right',
+      'Right',
+      'Right',
+      'Right',
     ],
 
   ],
@@ -538,6 +566,7 @@ function shifting() {
     });
   }
 }
+
 function unshifting() {
   if (currLang === 'en') {
     let targets = document.querySelectorAll('.enUp');
@@ -598,6 +627,23 @@ function langChange() {
   }
 }
 
+function bsHandler() {
+  let { value } = outputArea;
+  const pos = outputArea.selectionStart;
+  value = value.slice(0, pos - 1) + value.slice(pos);
+  outputArea.value = value;
+  outputArea.selectionStart = pos - 1;
+  outputArea.selectionEnd = pos - 1;
+}
+function delHandler() {
+  let { value } = outputArea;
+  const pos = outputArea.selectionStart;
+  value = value.slice(0, pos) + value.slice(pos + 1);
+  outputArea.value = value;
+  outputArea.selectionStart = pos;
+  outputArea.selectionEnd = pos;
+}
+
 container.addEventListener('click', (event) => {
   const keyClick = event.target.closest('div');
   const keyClickClass = event.target.closest('div').classList[0];
@@ -624,10 +670,21 @@ container.addEventListener('click', (event) => {
     outputArea.value += '\n';
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Backspace') {
-    outputArea.value = outputArea.value.slice(0, -1);
+    bsHandler();
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Del') {
+    delHandler();
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Tab') {
     outputArea.value += '    ';
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Left') {
+    outputArea.selectionStart -= 1;
+    outputArea.selectionEnd -= 1;
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Right') {
+    outputArea.selectionEnd += 1;
+    outputArea.selectionStart += 1;
   }
 });
 
@@ -636,9 +693,11 @@ if (prevLang === 'ru') {
 }
 
 
+
 // eslint-disable-next-line no-restricted-globals
 addEventListener('keydown', (event) => {
   const target = document.querySelector([`.${event.code}`]);
+  // console.log("event.code", event.code)
   target.classList.add('active');
   pressedKeys.add(event.code);
   let q = 0;
@@ -654,6 +713,28 @@ addEventListener('keydown', (event) => {
   }
   event.preventDefault();
   const input = document.querySelector([`.${event.code} .activeLetter`]).textContent;
+  console.log('input', input);
+  if (input === 'Enter') {
+    outputArea.value += '\n';
+  }
+  if (input === 'Backspace') {
+    bsHandler();
+  }
+  if (input === 'Del') {
+    delHandler();
+  }
+  if (input === 'Tab') {
+    outputArea.value += '    ';
+  }
+  if (input === 'Left') {
+    outputArea.selectionStart -= 1;
+    outputArea.selectionEnd -= 1;
+  }
+  if (input === 'Right') {
+    outputArea.selectionEnd += 1;
+    outputArea.selectionStart += 1;
+  }
+
   if (input.length < 2) outputArea.value += input;
 });
 

@@ -85,7 +85,6 @@
 .keybord-container .rows .MetaRight,
 .keybord-container .rows .ContextMenu,
 .keybord-container .rows .ControlRight,
-.keybord-container .rows .ShiftRight,
 .keybord-container .rows .Enter {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
