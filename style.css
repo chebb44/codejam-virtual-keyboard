@@ -14,7 +14,7 @@
   margin-bottom: 30px;
 }
 
-.keybord-container {
+.keyboard-container {
   margin-left: auto;
   margin-right: auto;
   display: -webkit-box;
@@ -32,7 +32,7 @@
           user-select: none;
 }
 
-.keybord-container .rows {
+.keyboard-container .rows {
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -42,7 +42,7 @@
           justify-content: space-between;
 }
 
-.keybord-container .rows div {
+.keyboard-container .rows div {
   margin: 2px;
   border-radius: 5px;
   background-color: cornflowerblue;
@@ -70,34 +70,34 @@
   transition: background-color 75ms ease-in-out;
 }
 
-.keybord-container .rows div .hidden {
+.keyboard-container .rows div .hidden {
   display: none;
 }
 
-.keybord-container .rows .Backspace,
-.keybord-container .rows .Tab,
-.keybord-container .rows .CapsLock,
-.keybord-container .rows .ShiftLeft,
-.keybord-container .rows .ControlLeft,
-.keybord-container .rows .MetaLeft,
-.keybord-container .rows .AltLeft,
-.keybord-container .rows .AltRight,
-.keybord-container .rows .MetaRight,
-.keybord-container .rows .ContextMenu,
-.keybord-container .rows .ControlRight,
-.keybord-container .rows .Enter {
+.keyboard-container .rows .Backspace,
+.keyboard-container .rows .Tab,
+.keyboard-container .rows .CapsLock,
+.keyboard-container .rows .ShiftLeft,
+.keyboard-container .rows .ControlLeft,
+.keyboard-container .rows .MetaLeft,
+.keyboard-container .rows .AltLeft,
+.keyboard-container .rows .AltRight,
+.keyboard-container .rows .MetaRight,
+.keyboard-container .rows .ContextMenu,
+.keyboard-container .rows .ControlRight,
+.keyboard-container .rows .Enter {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
-.keybord-container .rows .Space {
+.keyboard-container .rows .Space {
   -webkit-box-flex: 15;
       -ms-flex-positive: 15;
           flex-grow: 15;
 }
 
-.keybord-container .rows .active {
+.keyboard-container .rows .active {
   border-radius: 25px;
   background-color: #496fb4;
   -webkit-transition: background-color 75ms ease-in-out;

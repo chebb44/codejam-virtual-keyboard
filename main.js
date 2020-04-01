@@ -1,4 +1,3 @@
-
 const keys = [
   [
     [
@@ -475,6 +474,7 @@ const keys = [
 
   ],
 ];
+
 const pressedKeys = new Set();
 let currLang = 'en';
 const prevLang = localStorage.getItem('lang');
@@ -492,7 +492,7 @@ outputArea.classList.add('outputArea');
 body.appendChild(outputArea);
 
 const container = document.createElement('div');
-container.classList.add('keybord-container');
+container.classList.add('keyboard-container');
 body.appendChild(container);
 
 for (let i = 1; i < 6; i += 1) {
@@ -644,11 +644,19 @@ function delHandler() {
   outputArea.selectionEnd = pos;
 }
 
+function addChar(input) {
+  let { value } = outputArea;
+  const pos = outputArea.selectionStart;
+  value = value.slice(0, pos) + input + value.slice(pos);
+  outputArea.value = value;
+  outputArea.selectionStart = pos + input.length;
+  outputArea.selectionEnd = pos + input.length;
+}
+
 container.addEventListener('click', (event) => {
   const keyClick = event.target.closest('div');
   const keyClickClass = event.target.closest('div').classList[0];
   event.preventDefault();
-  // console.log('Pressed:', keyClickClass);
   setTimeout(() => {
     keyClick.classList.add('active');
     setTimeout(() => {
@@ -656,7 +664,7 @@ container.addEventListener('click', (event) => {
     }, 200);
   }, 0);
   if (keyClick.querySelector('.activeLetter').textContent.length < 2) {
-    outputArea.value += keyClick.querySelector('.activeLetter').textContent;
+    addChar(keyClick.querySelector('.activeLetter').textContent);
   }
   if (keyClickClass === 'ShiftLeft' || keyClickClass === 'ShiftRight') {
     setTimeout(() => {
@@ -667,7 +675,7 @@ container.addEventListener('click', (event) => {
     }, 0);
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Enter') {
-    outputArea.value += '\n';
+    addChar('\n');
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Backspace') {
     bsHandler();
@@ -676,7 +684,7 @@ container.addEventListener('click', (event) => {
     delHandler();
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Tab') {
-    outputArea.value += '    ';
+    addChar('    ');
   }
   if (keyClick.querySelector('.activeLetter').textContent === 'Left') {
     outputArea.selectionStart -= 1;
@@ -686,6 +694,12 @@ container.addEventListener('click', (event) => {
     outputArea.selectionEnd += 1;
     outputArea.selectionStart += 1;
   }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Up') {
+    addChar('Up');
+  }
+  if (keyClick.querySelector('.activeLetter').textContent === 'Down') {
+    addChar('Down');
+  }
 });
 
 if (prevLang === 'ru') {
@@ -693,59 +707,67 @@ if (prevLang === 'ru') {
 }
 
 
-
-// eslint-disable-next-line no-restricted-globals
-addEventListener('keydown', (event) => {
-  const target = document.querySelector([`.${event.code}`]);
-  // console.log("event.code", event.code)
-  target.classList.add('active');
-  pressedKeys.add(event.code);
-  let q = 0;
-  pressedKeys.forEach(() => {
-    q += 1;
-  });
-  if (pressedKeys.has('ControlLeft') && pressedKeys.has('AltLeft') && q === 2) {
-    // console.log('langChange()');
-    langChange();
+document.addEventListener('keydown', (event) => {
+  try {
+    const target = document.querySelector([`.${event.code}`]);
+    target.classList.add('active');
+    pressedKeys.add(event.code);
+    let q = 0;
+    pressedKeys.forEach(() => {
+      q += 1;
+    });
+    if (pressedKeys.has('ControlLeft') && pressedKeys.has('AltLeft') && q === 2) {
+      langChange();
+    }
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      shifting();
+    }
+    event.preventDefault();
+    const input = document.querySelector([`.${event.code} .activeLetter`]).textContent;
+    if (input === 'Enter') {
+      outputArea.value += '\n';
+    }
+    if (input === 'Backspace') {
+      bsHandler();
+    }
+    if (input === 'Del') {
+      delHandler();
+    }
+    if (input === 'Tab') {
+      addChar('    ');
+    }
+    if (input === 'Left') {
+      outputArea.selectionStart -= 1;
+      outputArea.selectionEnd -= 1;
+    }
+    if (input === 'Right') {
+      outputArea.selectionEnd += 1;
+      outputArea.selectionStart += 1;
+    }
+    if (input === 'Up') {
+      addChar('Up');
+    }
+    if (input === 'Down') {
+      addChar('Down');
+    }
+    if (input.length < 2) addChar(input);
+  } catch (err) {
+    return (err);
   }
-  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-    shifting();
-  }
-  event.preventDefault();
-  const input = document.querySelector([`.${event.code} .activeLetter`]).textContent;
-  console.log('input', input);
-  if (input === 'Enter') {
-    outputArea.value += '\n';
-  }
-  if (input === 'Backspace') {
-    bsHandler();
-  }
-  if (input === 'Del') {
-    delHandler();
-  }
-  if (input === 'Tab') {
-    outputArea.value += '    ';
-  }
-  if (input === 'Left') {
-    outputArea.selectionStart -= 1;
-    outputArea.selectionEnd -= 1;
-  }
-  if (input === 'Right') {
-    outputArea.selectionEnd += 1;
-    outputArea.selectionStart += 1;
-  }
-
-  if (input.length < 2) outputArea.value += input;
+  return (true);
 });
 
-// eslint-disable-next-line no-restricted-globals
-addEventListener('keyup', (event) => {
-  // console.log('Hard key ', event.code);
-  const target = document.querySelector([`.${event.code}`]);
-  target.classList.remove('active');
-  pressedKeys.delete(event.code);
-  // console.log(pressedKeys);
-  if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-    unshifting();
+
+document.addEventListener('keyup', (event) => {
+  try {
+    const target = document.querySelector([`.${event.code}`]);
+    target.classList.remove('active');
+    pressedKeys.delete(event.code);
+    if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+      unshifting();
+    }
+  } catch (err) {
+    return (err);
   }
+  return (true);
 });
